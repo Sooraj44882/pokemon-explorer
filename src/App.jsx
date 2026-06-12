@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Home from './pages/Home'
 import Pokedex from './pages/Pokedex'
+import Game from './pages/game'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <div className="space-x-6 text-slate-300 font-medium">
               <Link to="/" className="hover:text-white transition-colors">Home</Link>
               <Link to="/pokedex" className="hover:text-white transition-colors">Pokédex</Link>
+              <Link to="/game" className="hover:text-white transition-colors">Games</Link>
             </div>
           </div>
         </nav>
@@ -25,7 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/pokedex" element={<Pokedex />} />
-           
+            <Route path="/game" element={<Game />} />
           </Routes>
         </main>
         
