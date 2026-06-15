@@ -1,22 +1,24 @@
+import { Link } from 'react-router-dom';
+
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center text-center">
-      <h1 className="text-5xl font-bold text-yellow-400 drop-shadow-md mb-6">
-        Pokémon Explorer 
+    <div className="flex flex-col items-center justify-center mt-16 text-center">
+      <h1 className="mb-6 text-5xl font-extrabold text-red-600 drop-shadow-sm">
+        Pokémon Explorer
       </h1>
       
-      <p className="text-xl text-slate-300 mb-8 max-w-md">
+      <p className="max-w-md mb-8 text-xl text-gray-600">
         Your ultimate companion for exploring the Pokémon universe and testing your knowledge!
       </p>
       
       <div className="flex space-x-4">
-        <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 cursor-pointer">
+        <Link to="/pokedex" className="px-8 py-3 font-bold text-white transition-transform transform bg-blue-600 rounded-full shadow-md hover:bg-blue-700 hover:-translate-y-1">
           Open Pokédex
-        </button>
-        <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 cursor-pointer">
+        </Link>
+        <Link to="/game" className="px-8 py-3 font-bold text-white transition-transform transform bg-red-500 rounded-full shadow-md hover:bg-red-600 hover:-translate-y-1">
           Play Quiz
-        </button>
+        </Link>
       </div>
     </div>
-  )              
-}                                                   
+  )
+}
