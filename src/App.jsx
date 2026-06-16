@@ -10,7 +10,7 @@ function App() {
         
         <nav className="p-4 bg-white border-b border-gray-200 shadow-sm">
           <div className="flex items-center justify-between max-w-5xl px-4 mx-auto">
-            <h1 className="text-xl font-extrabold tracking-wider text-red-600">
+            <h1 className="text-xl font-extrabold tracking-wider text-black">
               <Link to="/">POKÉMON EXPLORER</Link>
             </h1>
             <div className="font-medium space-x-6 text-gray-500">

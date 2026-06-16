@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center mt-16 text-center">
-      <h1 className="mb-6 text-5xl font-extrabold text-red-600 drop-shadow-sm">
+      <h1 className="mb-6 text-5xl font-extrabold text-black drop-shadow-sm">
         Pokémon Explorer
       </h1>
       
