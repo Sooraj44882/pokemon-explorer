@@ -5,10 +5,23 @@ import PokemonCard from '../components/PokemonCard';
 export default function Pokedex() {
   const { allPokemon, visibleCount, loadMore } = usePokemon();
   const [search, setSearch]=useState('');
+  
+  const [activePokemon, setActivePokemon] = useState(null);
+
   const results = allPokemon.filter((p) => 
     p.name.includes(search.toLowerCase())
   );
   const displayList = search ? results : results.slice(0, visibleCount);
+
+  const handleCardClick = async (name) => {
+    try {
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+      const data = await res.json();
+      setActivePokemon(data);
+    } catch (err) {
+      console.log("Error fetching stats:", err);
+    }
+  };
 
   return (
     <div className="w-full max-w-5xl mx-auto bg-red-600 border-8 border-black rounded-3xl p-6 shadow-[12px_12px_0_0_#000] mb-10 mt-4">
@@ -37,7 +50,10 @@ export default function Pokedex() {
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
           {displayList.map((p) => (
-            <PokemonCard key={p.name} pokemon={p} />
+            
+            <div key={p.name} onClick={() => handleCardClick(p.name)} className="cursor-pointer hover:-translate-y-1 transition-transform">
+              <PokemonCard pokemon={p} />
+            </div>
           ))}
         </div>
 
@@ -57,6 +73,63 @@ export default function Pokedex() {
           </button>
         </div>
       )}
+
+      {activePokemon && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
+          onClick={() => setActivePokemon(null)}
+        >
+          <div 
+            className="w-full max-w-sm p-6 bg-red-600 border-4 border-black rounded-lg"
+            onClick={(e) => e.stopPropagation()}  
+          >
+           
+            <div className="p-4 mb-4 bg-white border-4 border-black rounded">
+              <img 
+                src={activePokemon.sprites.other['official-artwork'].front_default} 
+                alt={activePokemon.name}
+                className="w-32 h-32 mx-auto drop-shadow-md"
+              />
+              <h3 className="text-2xl font-bold text-center capitalize text-black mt-2">
+                {activePokemon.name}
+              </h3>
+              
+              <div className="flex justify-center gap-2 mt-2">
+                {activePokemon.types.map((t) => (
+                  <span key={t.type.name} className="px-2 py-1 text-xs font-bold text-white uppercase bg-black rounded">
+                    {t.type.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+          
+            <div className="p-4 font-mono text-sm bg-white border-4 border-black rounded text-black">
+              <div className="flex justify-between mb-2">
+                <p>HT: {activePokemon.height / 10}m</p>
+                <p>WT: {activePokemon.weight / 10}kg</p>
+              </div>
+              
+              <div className="pt-2 mt-2 border-t-2 border-green-800">
+                {activePokemon.stats.map((s) => (
+                  <div key={s.stat.name} className="flex justify-between">
+                    <span className="uppercase">{s.stat.name}</span>
+                    <span>{s.base_stat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button 
+              onClick={() => setActivePokemon(null)}
+              className="w-full py-2 mt-4 font-bold text-black uppercase bg-yellow-400 border-4 border-black hover:bg-yellow-300 active:translate-y-1 shadow-[2px_2px_0_0_#000]"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+  
     </div>
   );
 }
