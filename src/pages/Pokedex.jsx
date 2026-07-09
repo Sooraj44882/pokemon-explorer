@@ -15,11 +15,24 @@ export default function Pokedex() {
 
   const handleCardClick = async (name) => {
     try {
+    
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
       const data = await res.json();
-      setActivePokemon(data);
+      const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${data.id}`);
+      const speciesData = await speciesRes.json();
+
+      const englishEntry = speciesData.flavor_text_entries.find(e => e.language.name === 'en');
+      const cleanText = englishEntry ? englishEntry.flavor_text.replace(/[\n\f\r]/g, ' ') : "No data.";
+
+      setActivePokemon({ ...data, description: cleanText });
     } catch (err) {
       console.log("Error fetching stats:", err);
+    }
+  };
+  const playAudio = () => {
+    if (activePokemon?.cries?.latest) {
+      const audio = new Audio(activePokemon.cries.latest);
+      audio.play();
     }
   };
 
@@ -80,7 +93,7 @@ export default function Pokedex() {
           onClick={() => setActivePokemon(null)}
         >
           <div 
-            className="w-full max-w-sm p-6 bg-red-600 border-4 border-black rounded-lg"
+            className="w-full max-w-xl p-6 bg-red-600 border-4 border-black rounded-lg"
             onClick={(e) => e.stopPropagation()}  
           >
            
@@ -90,6 +103,13 @@ export default function Pokedex() {
                 alt={activePokemon.name}
                 className="w-32 h-32 mx-auto drop-shadow-md"
               />
+            
+            <div className="p-3 mb-4 bg-[#9bbc0f] border-4 border-black rounded shadow-inner">
+              <p className="font-mono text-sm font-bold text-black leading-relaxed">
+                "{activePokemon.description}"
+              </p>
+            </div>
+            
               <h3 className="text-2xl font-bold text-center capitalize text-black mt-2">
                 {activePokemon.name}
               </h3>
@@ -110,6 +130,12 @@ export default function Pokedex() {
                 <p>WT: {activePokemon.weight / 10}kg</p>
               </div>
               
+              <div className="mb-2 text-xs uppercase border-b-2 border-black pb-2">
+                <span className="font-bold">Abilities: </span>
+                {activePokemon.abilities.map(a => a.ability.name.replace('-', ' ')).join(', ')}
+              </div>
+
+              
               <div className="pt-2 mt-2 border-t-2 border-green-800">
                 {activePokemon.stats.map((s) => (
                   <div key={s.stat.name} className="flex justify-between">
@@ -119,6 +145,13 @@ export default function Pokedex() {
                 ))}
               </div>
             </div>
+
+            <button 
+              onClick={playAudio}
+              className="w-full py-2 mt-4 font-bold text-white uppercase bg-blue-500 border-4 border-black hover:bg-blue-400 active:translate-y-1 shadow-[2px_2px_0_0_#000]"
+            >
+               Play Cry
+            </button>
 
             <button 
               onClick={() => setActivePokemon(null)}
