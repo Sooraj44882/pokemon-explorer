@@ -3,9 +3,12 @@ import { useState } from "react";
 export default function Game(){
   const[mysteryPokemon,setMysteryPokemon]=useState(null);
 
-  const testFetch=async()=>{
-    try{
-      const res=await fetch(`https://pokeapi.co/api/v2/pokemon/1`);
+  const fetchRandomPokemon = async () => {
+    try {
+
+      const randomId = Math.floor(Math.random() * 151) + 1;
+
+      const res=await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
       const data=await res.json();
 
       console.log(data.name);
@@ -24,16 +27,25 @@ export default function Game(){
       
       <div className="text-center">
         <button 
-          onClick={testFetch}
+          onClick={fetchRandomPokemon}
           className="px-4 py-2 bg-blue-500 text-white font-bold border-2 border-black"
         >
            Pokémon
         </button>
 
         {mysteryPokemon && (
-          <p className="mt-4 font-mono text-green-600">
-            Loaded: {mysteryPokemon.name}
-          </p>
+          <div className="flex flex-col items-center">
+           
+            <img 
+              src={mysteryPokemon.sprites.other['official-artwork'].front_default} 
+              alt="mystery" 
+              className="w-48 h-48"
+            />
+          
+          <p className="mt-2 font-mono text-lg font-bold uppercase text-gray-500">
+              {mysteryPokemon.name}
+            </p>
+          </div>
         )}
       </div>
     </div>
