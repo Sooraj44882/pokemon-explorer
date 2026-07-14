@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState } from 'react';
+import PokemonScreen from '../components/PokemonScreen';
+import Controls from '../components/Controls';
 
 export default function Game(){
   const[mysteryPokemon,setMysteryPokemon]=useState(null);
@@ -50,68 +52,16 @@ export default function Game(){
     <div className="flex flex-col items-center justify-center max-w-4xl gap-4 mx-auto mt-10 md:flex-row md:items-stretch md:gap-2">
     
       <div className="flex flex-col justify-between w-full p-6 bg-red-600 border-8 border-black md:w-1/2 rounded-2xl shadow-[8px_8px_0_0_#000]">
-        
-        <div>
-          <div className="flex gap-2 mb-4">
-            <div className="w-8 h-8 bg-blue-400 border-4 border-black rounded-full shadow-inner"></div>
-            <div className="w-3 h-3 bg-red-500 border-2 border-black rounded-full"></div>
-            <div className="w-3 h-3 bg-yellow-400 border-2 border-black rounded-full"></div>
-            <div className="w-3 h-3 bg-green-500 border-2 border-black rounded-full"></div>
-          </div>
-
-          <div className="relative flex flex-col items-center justify-center p-4 bg-gray-100 border-4 border-black shadow-inner h-72 rounded-t-xl rounded-bl-3xl">
-            {mysteryPokemon ? (
-              <img 
-                src={mysteryPokemon.sprites.other['official-artwork'].front_default} 
-                alt="mystery" 
-                className={`w-52 h-52 transition-all duration-500 drop-shadow-xl ${isRevealed ? '' : 'brightness-0'}`}
-              />
-            ) : (
-              <div className="text-sm font-bold text-center text-gray-400 font-mono">
-                Awaiting Data... <br /> Press START below
-              </div>
-            )}
-          </div>
-        </div>
-        
-       
-        <div className="flex items-center justify-between px-2 mt-6">
-          
-          <div className="flex items-end gap-4">
-            
-            <div className="flex flex-col items-center">
-              <button 
-                onClick={checkGuess}
-                disabled={isRevealed || !mysteryPokemon}
-                className="w-12 h-12 bg-gray-900 border-2 border-gray-600 rounded-full shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none transition-all disabled:opacity-50 cursor-pointer hover:bg-gray-800"
-              ></button>
-              <span className="mt-1 text-xs font-bold text-black uppercase">Submit</span>
-            </div>
-
-          
-            <div className="flex flex-col gap-3 pb-1">
-             
-              <div className="w-10 h-3 border border-black rounded-full bg-red-800 shadow-[2px_2px_0_0_#000]"></div>
-              
-              <div className="flex flex-col items-center">
-                <button 
-                  onClick={handleNextOrGiveUp}
-                  className="w-10 h-3 bg-blue-800 rounded-full border border-black shadow-[2px_2px_0_0_#000] active:translate-y-0.5 active:shadow-none hover:bg-blue-500 transition-all cursor-pointer"
-                ></button>
-                <span className="text-[10px] font-bold mt-1 text-black uppercase leading-none">
-                  {!mysteryPokemon ? "Start" : isRevealed ? "Next" : "Give Up"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative flex items-center justify-center w-20 h-20 group">
-            <div className="absolute w-6 bg-gray-900 border-4 border-black rounded-sm h-16 group-hover:bg-gray-800 transition-colors"></div>
-            <div className="absolute h-6 bg-gray-900 border-4 border-black rounded-sm w-16 group-hover:bg-gray-800 transition-colors"></div>
-            <div className="absolute z-10 w-4 h-4 bg-gray-900 group-hover:bg-gray-800 transition-colors"></div>
-          </div>
-        </div>
-
+        <PokemonScreen 
+          mysteryPokemon={mysteryPokemon} 
+          isRevealed={isRevealed} 
+        />
+        <Controls 
+          checkGuess={checkGuess} 
+          mysteryPokemon={mysteryPokemon} 
+          isRevealed={isRevealed} 
+          handleNextOrGiveUp={handleNextOrGiveUp} 
+        />
       </div>
 
       <div className="flex flex-col justify-between w-full p-6 mt-0 bg-red-600 border-8 border-black md:w-1/2 rounded-2xl shadow-[8px_8px_0_0_#000] md:mt-12">
